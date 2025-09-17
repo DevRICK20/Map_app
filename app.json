@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "React_code",
-    "slug": "React_code",
+    "name": "OWN_MAPS",
+    "slug": "OWN_MAPS",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "reactcode",
+    "scheme": "ownmaps",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
