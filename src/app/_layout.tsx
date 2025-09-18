@@ -2,7 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { Stack } from "expo-router";
 import React, { useEffect, useRef } from "react";
 import { Animated, Easing } from "react-native";
-import "../global.css";
+import "../../global.css";
 
 function BlinkingShakingIcon() {
   const opacity = useRef(new Animated.Value(1)).current;

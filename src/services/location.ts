@@ -4,11 +4,20 @@ type LocationObject = Location.LocationObject;
 // Defines the structure of the address object returned by reverse geocoding.
 type GeocodedAddress = Location.LocationGeocodedAddress;
 
+export async function checkLocationAccess() {
+  let { status } = await Location.requestForegroundPermissionsAsync();
+
+  if (status !== "granted") {
+    return false;
+  }
+
+  return true;
+}
+
 export async function getLocationHandler(): Promise<
   LocationObject | undefined
 > {
   try {
-    // Fetch the current position with high accuracy.
     let currentLocation: LocationObject =
       await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.High,

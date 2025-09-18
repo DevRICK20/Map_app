@@ -1,6 +1,6 @@
-import { getLocationHandler } from "@/services/location";
+import { getLocationHandler } from "@/src/services/location";
 import React, { useEffect, useState } from "react";
-import { Dimensions, StatusBar, Text, View } from "react-native";
+import { ActivityIndicator, Dimensions, Text, View } from "react-native";
 import MapView, { Marker, Region } from "react-native-maps";
 // --- Main App Component ---
 
@@ -11,8 +11,8 @@ export default function Map() {
   const longitudeDelta = latitudeDelta * aspectRatio;
 
   const [region, setRegion] = useState<Region>({
-    latitude: 10,
-    longitude: 10,
+    latitude: 0,
+    longitude: 0,
     latitudeDelta: latitudeDelta,
     longitudeDelta: longitudeDelta,
   });
@@ -20,23 +20,37 @@ export default function Map() {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    getLocationHandler().then((location) => {
-      setRegion({
-        latitude: location!.coords.latitude,
-        longitude: location!.coords.longitude,
-        latitudeDelta: latitudeDelta,
-        longitudeDelta: longitudeDelta,
+    getLocationHandler()
+      .then((location) => location?.coords)
+      .then((coords) => {
+        setRegion({
+          latitude: coords!.latitude,
+          longitude: coords!.longitude,
+          latitudeDelta: latitudeDelta,
+          longitudeDelta: longitudeDelta,
+        });
+        setLoading(false);
       });
-      console.log(region.latitude);
-    });
   }, []);
 
-  return (
+  return loading ? (
+    <View
+      style={{
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <ActivityIndicator size={100} color="#007fe7ff" />
+    </View>
+  ) : (
     <View style={{ flex: 1, height: "10%" }}>
       <MapView
         style={{ flex: 1 }}
         initialRegion={region} // Correct use of initialRegion
-        onRegionChangeComplete={(newRegion) => setRegion(newRegion)}
+        // onRegionChangeComplete={(newRegion) => setRegion(newRegion)}
         rotateEnabled={true} //  Enable rotation gestures
         pitchEnabled={true} //  Enable tilt gestures
         zoomEnabled={true} //  Enable zoom gestures
@@ -78,7 +92,7 @@ export default function Map() {
         </View>
       </View>
 
-      <StatusBar />
+      {/* <StatusBar /> */}
       {/* <BottomNavbar activeTab={""} onTabPress={function (): void {}} /> */}
     </View>
   );
