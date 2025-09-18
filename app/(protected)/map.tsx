@@ -1,35 +1,52 @@
-import React, { useState } from "react";
-import { Dimensions, StatusBar, StyleSheet, Text, View } from "react-native";
+import { getLocationHandler } from "@/services/location";
+import React, { useEffect, useState } from "react";
+import { Dimensions, StatusBar, Text, View } from "react-native";
 import MapView, { Marker, Region } from "react-native-maps";
-
 // --- Main App Component ---
 
-interface MapProp {
-  latitude: number;
-  longitude: number;
-}
-
-export default function Map({ latitude, longitude }: MapProp) {
+export default function Map() {
   const { width, height } = Dimensions.get("window");
   const aspectRatio = width / height;
   const latitudeDelta = 0.0922;
   const longitudeDelta = latitudeDelta * aspectRatio;
 
   const [region, setRegion] = useState<Region>({
-    latitude: latitude,
-    longitude: longitude,
+    latitude: 10,
+    longitude: 10,
     latitudeDelta: latitudeDelta,
     longitudeDelta: longitudeDelta,
   });
+
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    getLocationHandler().then((location) => {
+      setRegion({
+        latitude: location!.coords.latitude,
+        longitude: location!.coords.longitude,
+        latitudeDelta: latitudeDelta,
+        longitudeDelta: longitudeDelta,
+      });
+      console.log(region.latitude);
+    });
+  }, []);
+
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, height: "10%" }}>
       <MapView
         style={{ flex: 1 }}
-        region={region}
+        initialRegion={region} // Correct use of initialRegion
         onRegionChangeComplete={(newRegion) => setRegion(newRegion)}
+        rotateEnabled={true} //  Enable rotation gestures
+        pitchEnabled={true} //  Enable tilt gestures
+        zoomEnabled={true} //  Enable zoom gestures
+        scrollEnabled={true} //  Enable panning gestures
       >
         <Marker
-          coordinate={{ latitude: latitude, longitude: longitude }}
+          coordinate={{
+            latitude: region.latitude,
+            longitude: region.longitude,
+          }}
           title="My Location"
           description="You are here"
         />
@@ -51,6 +68,8 @@ export default function Map({ latitude, longitude }: MapProp) {
             shadowColor: "#000",
             shadowOpacity: 0.3,
             shadowRadius: 5,
+            alignItems: "center",
+            marginBottom: 90,
           }}
         >
           <Text style={{ fontWeight: "bold" }}>Map Example</Text>
@@ -60,12 +79,13 @@ export default function Map({ latitude, longitude }: MapProp) {
       </View>
 
       <StatusBar />
+      {/* <BottomNavbar activeTab={""} onTabPress={function (): void {}} /> */}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  map: {
-    flex: 1,
-  },
-});
+// const styles = StyleSheet.create({
+//   map: {
+//     flex: 1,
+//   },
+// });
