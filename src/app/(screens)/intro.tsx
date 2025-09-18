@@ -1,28 +1,17 @@
 import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Pressable,
-  ScrollView,
-  Text,
-  View,
-} from "react-native";
+import React, { useState } from "react";
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
 
-import { checkLocationAccess } from "../services/location";
+import { checkLocationAccess } from "@/src/services/location";
 
 export default function LocationRequestService() {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const router = useRouter();
-
-  useEffect(() => {
-    handleRequestLocation();
-  }, []);
 
   const handleRequestLocation = () => {
     checkLocationAccess().then((hasLocationAccess) => {
       if (hasLocationAccess) {
-        // setIsLoading(false);
         setTimeout(() => {
           router.replace("/(screens)/(protected)/home");
         }, 1000);
@@ -32,23 +21,8 @@ export default function LocationRequestService() {
     });
   };
 
-  return isLoading ? (
-    <View
-      style={{
-        height: "100%",
-        width: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <ActivityIndicator size={50} color="#007fe7ff" />
-    </View>
-  ) : (
-    <ScrollView
-      className="bg-slate-100 w-full"
-      contentContainerClassName="flex-1 justify-center items-center p-5"
-    >
+  return (
+    <View className="bg-slate-100 w-full flex-1 justify-center items-center p-5">
       <View className="w-full mt-8  max-w-md bg-white rounded-2xl p-6 items-center shadow-lg">
         <Text
           className="text-base text-gray-600 text-center mb-6 leading-snug"
@@ -77,6 +51,6 @@ export default function LocationRequestService() {
           </Text>
         </Pressable>
       </View>
-    </ScrollView>
+    </View>
   );
 }
