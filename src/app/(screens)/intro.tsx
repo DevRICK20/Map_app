@@ -39,12 +39,8 @@ export default function LocationRequestService() {
           This app requires your permission to access location data to show your
           current position.
         </Text>
-        <Button
-          onPress={handleRequestLocation}
-          disabled={isLoading}
-          loading={isLoading}
-        >
-          {"Get My Location"}
+        <Button onPress={handleRequestLocation} loading={isLoading}>
+          <Text>Location</Text>
         </Button>
       </View>
     </View>

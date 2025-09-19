@@ -107,7 +107,13 @@ export default function SignupScreen() {
 
       <View className="h-5 w-full" />
 
-      <Button loading={isLoading} onPress={handleSignup} disabled={isLoading}>
+      <Button
+        width={250}
+        height={50}
+        loading={isLoading}
+        onPress={handleSignup}
+        disabled={isLoading}
+      >
         <Text className="text-white text-lg font-bold">Sign Up</Text>
       </Button>
 

@@ -77,9 +77,11 @@ function BlinkingShakingIcon() {
 export default function ProtectedTabs() {
   return (
     <Tabs
-      screenOptions={{
-        headerRight: () => <BlinkingShakingIcon />,
-      }}
+      screenOptions={
+        {
+          // headerRight: () => <BlinkingShakingIcon />,
+        }
+      }
     >
       <Tabs.Screen
         name="home"
@@ -114,6 +116,15 @@ export default function ProtectedTabs() {
           title: "Contact",
           tabBarIcon: ({ color }) => (
             <Feather name="file-text" size={22} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="setting"
+        options={{
+          title: "Setting",
+          tabBarIcon: ({ color }) => (
+            <Feather name="settings" size={22} color={color} />
           ),
         }}
       />

@@ -18,8 +18,9 @@ export default function Button({
 }: ButtonProp) {
   return (
     <Pressable
-      className="bg-blue-600 flex items-center justify-center shadow-lg"
+      className="flex items-center justify-center shadow-lg"
       style={{
+        backgroundColor: "#5372faff",
         height: height,
         width: width,
         borderRadius: 20,
