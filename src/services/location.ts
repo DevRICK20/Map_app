@@ -1,7 +1,6 @@
 import * as Location from "expo-location";
 
 type LocationObject = Location.LocationObject;
-// Defines the structure of the address object returned by reverse geocoding.
 type GeocodedAddress = Location.LocationGeocodedAddress;
 
 export async function checkLocationAccess() {

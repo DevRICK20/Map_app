@@ -1,6 +1,10 @@
 import React from "react";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 
-export default function App() {
-  return <View></View>;
+export default function HomeScreen() {
+  return (
+    <View className="size-full flex items-center justify-center">
+      <Text>Home</Text>
+    </View>
+  );
 }

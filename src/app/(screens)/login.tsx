@@ -1,12 +1,14 @@
 import Button from "@/src/components/Button";
 import Input from "@/src/components/Input";
-import { Link } from "expo-router";
-import React, { useRef, useState } from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { ThemeContext } from "@/src/providers/theme";
+import { setAccessToken } from "@/src/services/storage";
+import { Link, useRouter } from "expo-router";
+import React, { useContext, useRef, useState } from "react";
+import { Text, View } from "react-native";
 
-const {} = Dimensions.get("window");
+export default function LoginScreen() {
+  const router = useRouter();
 
-const LoginScreen = () => {
   const emailRef = useRef("");
   const passwordRef = useRef("");
 
@@ -14,6 +16,8 @@ const LoginScreen = () => {
 
   const [emailError, setemailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
+
+  const theme = useContext(ThemeContext);
 
   const handleLogin = async () => {
     setIsLoading(true);
@@ -38,8 +42,9 @@ const LoginScreen = () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      if (email === "test@example.com" && password === "password123") {
-        console.log("Login successful!");
+      if (email === "rig@email.com" && password === "rig1234") {
+        await setAccessToken("testToken");
+        router.replace("/(screens)/(protected)/home");
       }
     } catch (err) {
       console.log(err);
@@ -49,39 +54,36 @@ const LoginScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Container for the logo/icon */}
-      <View style={styles.logoContainer}>
-        {/* You can replace this with an actual logo or icon */}
-        <Text style={styles.logoText}>🚀</Text>
+    <View className="flex-1 items-center bg-gray-100 min-h-full pt-[150px] px-6">
+      <View className="mb-5 w-20 h-20 rounded-full bg-gray-200 justify-center items-center shadow-md">
+        <Text className="text-4xl">🚀</Text>
       </View>
 
-      <Text style={styles.title}>Welcome Back!</Text>
+      <Text className="text-3xl font-bold text-gray-800 mb-5">
+        Welcome Back!
+      </Text>
 
-      <Text style={styles.error} className="text-red-500 text-sm">
+      <Text className="text-red-500 text-sm h-5 w-full pl-0.5">
         {emailError}
       </Text>
 
-      {/* Email Input */}
       <Input
         placeholder="Email"
         onChangeText={(text) => (emailRef.current = text)}
       />
 
-      <Text style={styles.error} className="text-red-500 text-sm">
+      <Text className="text-red-500 text-sm h-5 w-full pl-0.5">
         {passwordError}
       </Text>
 
-      {/* Password Input */}
       <Input
         placeholder="Password"
         disabledIcon={false}
         onChangeText={(text) => (passwordRef.current = text)}
       />
 
-      <View style={styles.error} />
+      <View className="w-full h-5" />
 
-      {/* Login Button */}
       <Button
         width={250}
         height={50}
@@ -91,61 +93,13 @@ const LoginScreen = () => {
       >
         <Text className="text-white text-lg font-bold">Log In</Text>
       </Button>
+
       <Link
-        style={{
-          display: "flex",
-          paddingTop: 20,
-          alignContent: "center",
-          justifyContent: "center",
-          color: "#0404f1ff",
-        }}
+        className="pt-5 text-center text-blue-600"
         href={"/(screens)/signup"}
       >
-        Already have an account ?
+        Don't have an account ?
       </Link>
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 150,
-    paddingHorizontal: 25,
-    alignItems: "center",
-    backgroundColor: "#f0f0f0ff",
-    minHeight: "100%",
-  },
-  logoContainer: {
-    marginBottom: 20,
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: "#e5e7eb",
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  logoText: {
-    fontSize: 40,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "700",
-    color: "#1f2937",
-    marginBottom: 20,
-  },
-  error: {
-    width: "100%",
-    height: 20,
-    display: "flex",
-    alignItems: "center",
-    paddingLeft: 3,
-  },
-});
-
-export default LoginScreen;
+}

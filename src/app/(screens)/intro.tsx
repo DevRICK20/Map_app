@@ -1,8 +1,9 @@
+import Button from "@/src/components/Button";
+import { checkLocationAccess } from "@/src/services/location";
+import { setIntroStatus } from "@/src/services/storage";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { ActivityIndicator, Pressable, Text, View } from "react-native";
-
-import { checkLocationAccess } from "@/src/services/location";
+import { Text, View } from "react-native";
 
 export default function LocationRequestService() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -12,8 +13,9 @@ export default function LocationRequestService() {
   const handleRequestLocation = () => {
     checkLocationAccess().then((hasLocationAccess) => {
       if (hasLocationAccess) {
-        setTimeout(() => {
-          router.replace("/(screens)/(protected)/home");
+        setTimeout(async () => {
+          await setIntroStatus("true");
+          router.replace("/(screens)/auth");
         }, 1000);
       } else {
         setIsLoading(false);
@@ -37,19 +39,13 @@ export default function LocationRequestService() {
           This app requires your permission to access location data to show your
           current position.
         </Text>
-        <Pressable
-          className="bg-blue-600 py-4 px-10 rounded-full shadow-md active:bg-blue-700 active:scale-95 transition-transform"
+        <Button
           onPress={handleRequestLocation}
           disabled={isLoading}
+          loading={isLoading}
         >
-          <Text className="text-white text-lg font-semibold">
-            {isLoading ? (
-              <ActivityIndicator color={"white"} />
-            ) : (
-              "Get My Location"
-            )}
-          </Text>
-        </Pressable>
+          {"Get My Location"}
+        </Button>
       </View>
     </View>
   );

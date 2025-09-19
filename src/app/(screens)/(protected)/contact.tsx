@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, Text, View } from "react-native";
 
-export default function new_screen() {
+export default function ContactScreen() {
   const contacts = [
     { name: "John Doe", number: "+91 9876543210", desc: "School friend" },
     { name: "Emily Watson", number: "+91 9123456789", desc: "Work colleague" },

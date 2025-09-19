@@ -1,10 +1,13 @@
 import Button from "@/src/components/Button";
 import Input from "@/src/components/Input";
-import { Link } from "expo-router";
+import { setAccessToken } from "@/src/services/storage";
+import { Link, useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
-const SignupScreen = () => {
+export default function SignupScreen() {
+  const router = useRouter();
+
   const emailRef = useRef("");
   const passwordRef = useRef("");
   const confirmPasswordRef = useRef("");
@@ -52,8 +55,10 @@ const SignupScreen = () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      // Simulate a successful signup
-      console.log("Signup successful!");
+      if (email === "rig@email.com" && password === "rig1234") {
+        await setAccessToken("testToken");
+        router.replace("/(screens)/(protected)/home");
+      }
     } catch (err) {
       console.log(err);
     } finally {
@@ -62,115 +67,56 @@ const SignupScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Container for the logo/icon */}
-      <View style={styles.logoContainer}>
-        {/* You can replace this with an actual logo or icon */}
-        <Text style={styles.logoText}>📝</Text>
+    <View className="flex-1 items-center px-6 pt-[150px] min-h-full">
+      <View className="mb-5 w-20 h-20 rounded-full bg-gray-200 justify-center items-center shadow-md">
+        <Text className="text-4xl">📝</Text>
       </View>
 
-      <Text style={styles.title}>Create a New Account</Text>
+      <Text className="text-3xl font-bold text-gray-800 mb-5">
+        Create a New Account
+      </Text>
 
-      <Text style={styles.error} className="text-red-500 text-sm">
+      <Text className="text-red-500 text-sm h-5 w-full pl-0.5">
         {emailError}
       </Text>
 
-      {/* Email Input */}
       <Input
         placeholder="Email"
         onChangeText={(text) => (emailRef.current = text)}
       />
 
-      <Text style={styles.error} className="text-red-500 text-sm">
+      <Text className="text-red-500 text-sm h-5 w-full pl-0.5">
         {passwordError}
       </Text>
 
-      {/* Password Input */}
       <Input
         placeholder="Password"
         disabledIcon={false}
         onChangeText={(text) => (passwordRef.current = text)}
       />
 
-      <Text style={styles.error} className="text-red-500 text-sm">
+      <Text className="text-red-500 text-sm h-5 w-full pl-0.5">
         {confirmPasswordError}
       </Text>
 
-      {/* Confirm Password Input */}
       <Input
         placeholder="Confirm Password"
         disabledIcon={false}
         onChangeText={(text) => (confirmPasswordRef.current = text)}
       />
 
-      <View style={styles.error} />
+      <View className="h-5 w-full" />
 
-      {/* Signup Button */}
-      <Button
-        width={250}
-        height={50}
-        loading={isLoading}
-        onPress={handleSignup}
-        disabled={isLoading}
-      >
+      <Button loading={isLoading} onPress={handleSignup} disabled={isLoading}>
         <Text className="text-white text-lg font-bold">Sign Up</Text>
       </Button>
+
       <Link
-        style={{
-          // height: 25,
-          display: "flex",
-          // backgroundColor: "red",
-          paddingTop: 20,
-          alignContent: "center",
-          justifyContent: "center",
-          color: "#0404f1ff",
-        }}
+        className="pt-5 text-center text-blue-600"
         href={"/(screens)/login"}
       >
         Already have an account ?
       </Link>
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 150,
-    alignItems: "center",
-    paddingHorizontal: 25,
-    minHeight: "100%",
-  },
-  logoContainer: {
-    marginBottom: 20,
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: "#e5e7eb",
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  logoText: {
-    fontSize: 40,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "700",
-    color: "#1f2937",
-    marginBottom: 20,
-  },
-  error: {
-    width: "100%",
-    height: 20,
-    display: "flex",
-    alignItems: "center",
-    paddingLeft: 3,
-  },
-});
-
-export default SignupScreen;
+}

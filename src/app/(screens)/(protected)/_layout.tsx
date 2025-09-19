@@ -58,7 +58,7 @@ function BlinkingShakingIcon() {
 
   const shakeInterpolation = shake.interpolate({
     inputRange: [-1, 1],
-    outputRange: ["-10deg", "10deg"], // ✅ rotation degrees
+    outputRange: ["-10deg", "10deg"],
   });
 
   return (
@@ -109,9 +109,9 @@ export default function ProtectedTabs() {
         }}
       />
       <Tabs.Screen
-        name="contacts"
+        name="contact"
         options={{
-          title: "Contacts",
+          title: "Contact",
           tabBarIcon: ({ color }) => (
             <Feather name="file-text" size={22} color={color} />
           ),

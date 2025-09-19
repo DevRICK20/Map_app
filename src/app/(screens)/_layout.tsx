@@ -1,7 +1,13 @@
+import { ThemeContext } from "@react-navigation/native";
 import { Stack } from "expo-router";
+import { useContext } from "react";
 
-export default function Layout() {
+export default function ScreenLayout() {
+  const theme = useContext(ThemeContext);
+
   return (
-    <Stack screenOptions={{ headerShown: false }} initialRouteName="auth" />
+    <ThemeContext.Provider value={theme}>
+      <Stack screenOptions={{ headerShown: false }} initialRouteName="auth" />
+    </ThemeContext.Provider>
   );
 }

@@ -9,7 +9,18 @@ export default function Layout() {
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const handleVerification = async () => {
+  const handleAccess = async (accessToke: string) => {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    if (!(accessToke == "testToken")) {
+      setIsLoading(false);
+      return router.replace("/(screens)/login");
+    }
+
+    return router.replace("/(screens)/(protected)/home");
+  };
+
+  const handleAuth = async () => {
     const status = await getIntroStatus();
 
     if (!status) {
@@ -28,12 +39,11 @@ export default function Layout() {
       return router.replace("/(screens)/login");
     }
 
-    setIsLoading(false);
-    return router.replace("/(screens)/(protected)/home");
+    await handleAccess(accessToke);
   };
 
   useEffect(() => {
-    handleVerification();
+    handleAuth();
   }, []);
 
   if (isLoading)

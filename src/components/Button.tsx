@@ -5,7 +5,7 @@ interface ButtonProp extends PressableProps {
   onPress: () => void;
   height?: number;
   width?: number;
-  disabled: boolean;
+  disabled?: boolean;
   loading: boolean;
 }
 export default function Button({
